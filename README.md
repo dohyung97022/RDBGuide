@@ -23,3 +23,11 @@
   * 소개팅과도 같다. 짝이 없으면? 나가리... 나는 인싸 조인이라고 부른다.     
   * ![](img/inner_join.PNG)    
   * SELECT * FROM table_a JOIN table_b ON a.id = b.a_id;
+
+## Outer Join
+  * 외부 조인은 조인되는 컬럼의 짝이 없어도 모두 포함된다.
+  * Join 되는 컬럼이 겹치지 않는다면 null 로 들어간다.
+  * ![](img/outer_join.PNG)
+  * SELECT * FROM table_a LEFT OUTER JOIN table_b ON a.id = b.a_id   
+    UNION   
+    SELECT * FROM table_a RIGHT OUTER JOIN table_b ON a.id = b.a_id;
