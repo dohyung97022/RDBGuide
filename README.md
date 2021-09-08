@@ -12,7 +12,6 @@ TODO : B+ tree 이어서 작성하기
   * Atomic columns 
   * 한개의 컬럼에 1개의 값만 들어가야 한다.
   * 컬럼을 더 만들어 넣는다.
-  드랍다운 내용
   </details>
   <br>
 
