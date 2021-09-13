@@ -76,7 +76,8 @@ TODO : B+ tree 이어서 작성하기
   </summary>
   <br>
   
-  ![](img/left_right_join.PNG)
+  ![](img/left_right_join.PNG)   
+
   left / right join 은 해당 조인이 포함시킬 부분집합을 예기합니다.
 
   Left inner join 이라는 개념은 없습니다.   
@@ -138,7 +139,7 @@ TODO : B+ tree 이어서 작성하기
 
   <details>
   <summary>
-  explain
+  explain (튜닝)
   </summary>
   <br>
   
