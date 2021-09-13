@@ -12,7 +12,6 @@ TODO : B+ tree 이어서 작성하기
   * Atomic columns 
   * 한개의 컬럼에 1개의 값만 들어가야 한다.
   * 컬럼을 더 만들어 넣는다.
-  드랍다운 내용
   </details>
   <br>
 
@@ -70,6 +69,23 @@ TODO : B+ tree 이어서 작성하기
     SELECT * FROM table_a RIGHT OUTER JOIN table_b ON a.id = b.a_id;
   </details>
   <br>
+
+  <details>
+  <summary>
+  Left / Right join
+  </summary>
+  <br>
+  
+  ![](img/left_right_join.PNG)
+  left / right join 은 해당 조인이 포함시킬 부분집합을 예기합니다.
+
+  Left inner join 이라는 개념은 없습니다.   
+  심지어 left outer join 이라는 개념은 이미 left join 안에 내포되어 있습니다.   
+
+  위 그림의 Table A 안의 모든 부분들을 포함해야 한다는 조건 자체가 outer 의 개념에 해당되기 때문입니다. 
+      
+  </details>
+  <br>
     
 ## [Indexing](https://www.youtube.com/watch?v=HubezKbFL7E)
   <details>
@@ -114,6 +130,73 @@ TODO : B+ tree 이어서 작성하기
   </summary>
   <br>
 
-  B+ Tree 는 leaf node 들이 doubly linked list 의 형태가 되어 있는 경우입니다.   
+  B+ Tree 는 leaf node 들이 doubly linked list 의 형태가 되어 있는 balanced tree 입니다.   
+  RDB 는 이 B+ tree 를 통해 Clustered / Non-clustered index 를 만듭니다.   
+  B Tree 의 설질을 갖고 있어 특정 노드가 해당 크기를 넘어설 경우 위로 보내고, 분산시키며 balance 를 유지시킵니다.
+  </details>
+  <br>
+
+  <details>
+  <summary>
+  explain
+  </summary>
+  <br>
+  
+  [이분만큼 index 튜닝에 대하여 실질적으로 실험하며 보여준 동영상은 없었습니다.](https://www.youtube.com/watch?v=HubezKbFL7E&t=557s)    
+
+  <br>
+  
+  EXPLAIN 구문을 사용하신다면 특정한 쿼리의 인덱싱을 벤치마킹할 수 있습니다.   
+
+  ```sql
+  EXPLAIN SELECT * FROM user WHERE id = 1
+  ```
+
+  결과   
+
+  |구분|내용|
+  |---|---|
+  |id|SELECT 절마다 부여된 번호|
+  |table|참조하는 테이블|
+  |select_type|사용된 SELECT 절의 종류|
+  |type|조회하는 전략, 방법|
+  |possible_keys|조회에 사용이 가능한 인덱스 리스트
+  |key|실제로 사용되는 인덱스|
+  |key_len|실제로 사용되는 인덱스의 길이|
+  |ref|실제로 사용되는 인덱스 이전의 선행 테이블의 컬럼|
+  |rows|읽기 위해 통과되는 row 의 개수|
+  |extra|추가정보| 
+
+  type
+
+  |구분|내용|
+  |---|---|
+  |const|단일한 테이블에서 최대 1개의 단일한 결과가 나올 경우|
+  |eq_ref|join 된 테이블에서 최대 1개의 단일한 결과가 나올 경우|
+  |ref/range|range 의 시작 점을 찾고 linked-list 를 진행하며 range 가 끝나는 부분을 찾는 경우|
+  |index|인덱스를 사용하여 제일 첫 leaf node 에서 linked-list 진행하며 찾을 때까지 나가는 경우|
+  |all|full table scan 으로 모든 컬럼을 받아 찾는 경우|
+
+  이 결과에서 유심하게 보셔야 할 부분은 `type`, `possible_keys`, `key`, `rows` 입니다.
+
+  `type` 에서   
+  type `const`, `eq_ref` 의 경우 더 빨라질 여지는 없습니다.   
+  단일한 값을 찾는 인덱스를 사용하였기 때문입니다.   
+  
+  `ref`/`range` 가 나왔을 경우 쿼리에서 BETWEEN 구문같은 범위를 지정했을 경우 의도한
+  대로 인덱싱이 진행되었습니다.
+
+  `index`/`all` 이 나왔을 경우 index tree 나 table 을 전수조사하였다는 의미임으로
+  개선의 여지가 있습니다.   
+
+  `possible_keys`의 경우   
+  인덱스를 사용할 수 있지만 어떠한 이유로 인덱스를 사용하지 않는 것이 더 빠르다고
+  mysql 이 인식할 수 있습니다.   
+  예로 DISK I/O 가 개별적으로 이뤄지기보다 batch 단위로 이뤄지는 것이 더 좋다고 판단되는 경우 
+  인덱스가 사용되지 않고 possible_keys 에 위치할 수 있습니다.   
+
+  `key` 를 통해서 자신의 인덱스가 실제로 사용되는지 확인하시면 됩니다.   
+
+  `row` 를 통해 어느정도의 row 를 통과해야 하는지 인덱스의 성능을 확인할 수 있습니다.
   </details>
   <br>
