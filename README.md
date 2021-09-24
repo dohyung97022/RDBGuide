@@ -205,3 +205,47 @@ TODO : B+ tree 이어서 작성하기
   `row` 를 통해 어느정도의 row 를 통과해야 하는지 인덱스의 성능을 확인할 수 있습니다.
   </details>
   <br>
+
+## Operator
+  <details>
+  <summary>
+  LIKE
+  </summary>
+  <br>
+  
+  SQL 만의 정규표현식으로 column 을 query 할 수 있는 기능   
+  <br>
+
+  ```sql
+  SELECT * FROM users
+  WHERE name LIKE '김%';
+  ```
+
+  다음 구문은 '김' 씨로 시작하는 user 를 찾는 구문입니다.   
+  
+  이렇게 `LIKE` 는 특정 column 에 regex 를 할 수 있습니다.   
+  정확히 regex 는 아니지만 쓰임이 비슷하며 SQL 만의 규칙을 따릅니다.   
+  <br>
+  
+  
+  |구문|의미|
+  |:---:|:---:|
+  |%|0 개, 1개 또는 여러개의 char|
+  |_|1 개의 char|
+  |[ABC]|A 또는 B 또는 C char 1개|
+  |[^A]|A 가 아닌 char 1개|
+  |[0-9]|0 에서 9 까지의 숫자 char 1개|
+  |[a-z]|a 에서 z 까지의 숫자 char 1개|
+  |[A-Z]|A 에서 Z 까지의 숫자 char 1개|
+
+  예시   
+  `_도_` -> 김도형, 장도현   
+  `%라면` -> 차슈라면, 너구리라면   
+  `[빨주노]%` -> 빨강색, 주황색, 노랑색   
+
+  그 외   
+  `NOT` 을 붙여서 전체적인 LIKE 구문의 역을 구할 수도 있습니다.   
+  Regex 에 비하여 구현력이 많이 떨어집니다.   
+  그래서 Mysql 을 사용하신다면 REGEXP를 사용하시는 것을 추천드립니다.
+  </details>
+  <br>
