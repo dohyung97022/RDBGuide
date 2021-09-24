@@ -80,6 +80,10 @@ TODO : B+ tree 이어서 작성하기
 
   left / right join 은 해당 조인이 포함시킬 부분집합을 예기합니다.
 
+  left join 의 경우 왼쪽의 모든 row 를 반환하고   
+  match 가 존재하는 경우 해당 row 의 오른쪽 column 들을 같이 반환하고   
+  left 에 존재하지만 match 가 없을 경우 오른쪽 column 에 null 을 반환합니다.   
+
   Left inner join 이라는 개념은 없습니다.   
   심지어 left outer join 이라는 개념은 이미 left join 안에 내포되어 있습니다.   
 
