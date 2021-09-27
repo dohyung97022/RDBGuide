@@ -249,3 +249,110 @@ TODO : B+ tree 이어서 작성하기
   그래서 Mysql 을 사용하신다면 REGEXP를 사용하시는 것을 추천드립니다.
   </details>
   <br>
+
+  <details>
+  <summary>
+  GROUP BY
+  </summary>
+  <br>
+
+  특정한 컬럼으로 중복되는 값들을 모으는 방식입니다.   
+  주로 집계함수를 쓰고 싶을 때 사용됩니다.    
+
+  |id|name|age|
+  |:---:|:---:|:---:|
+  |1|김도형|25|
+  |2|김준형|23|
+  |3|장광식|25|
+  |4|권설민|24|
+
+  `SELECT COUNT(age) FROM TABLE GROUP BY age`
+
+  |COUNT(age)|age|
+  |:---:|:---:|
+  |1|23|
+  |1|24|
+  |2|25|
+
+  집계함수에는 `COUNT(), MAX(), MIN(), SUM(), AVG()` 가 있습니다.    
+
+  <br>
+
+  ### 특징    
+
+  `SELECT * FROM TABLE GROUP BY age`
+
+  |id|name|age|
+  |:---:|:---:|:---:|
+  |2|김준형|23|
+  |4|권설민|24|
+  |1|김도형|25|
+
+  집계함수가 아닌 실제 컬럼이 SELECT 안에 들어갔을 때 GROUP BY 의 컬럼의 가장 첫 값들을 반환합니다.   
+  age 가 25 인 row 중 김도형이 장광식보다 먼저 나와있어 김도형이 출력됩니다.   
+  
+  GROUP BY 는 정렬되어 출력됩니다.   
+  23-24-25 순서대로 출력됩니다. 문자일 경우 Alphabetic order 로 출력됩니다.    
+  <br>
+
+  ### DISTINCT 와의 차이
+  GROUP BY 와 DISTINCT 는 비슷하면서도 다릅니다.
+
+  `SELECT DISTINCT column FROM table`   
+  `SELECT column FROM table GROUP BY column`   
+
+  위 두 구문의 정렬 순서만 빼면 결과는 같습니다.   
+  하지만 그 의미상으로는 다른 예기를 하고 있습니다.    
+  <br>
+
+  DISTINCT 는 different 와 같은 의미로 `SELECT DISTINCT column FROM table` 를 풀어 설명하면   
+  column 의 다른(different/DISTINCT) 한 값들을 찾아주라는 의미입니다.   
+  
+  GROUP BY 는 해당 컬럼으로 모와서 나타내라는 의미로 `SELECT column FROM table GROUP BY column` 를 풀어 설명하면   
+  column 이 같은 값들로 모와서(GROUP BY) 찾아주라는 의미입니다.   
+
+  DISTINCT 는 단일한 값의 정보들만이 내포되어 있지만 GROUP BY 는 집합의 정보가 내포되어 있습니다.   
+  그래서 DISTINCT 는 SELECT 이후에 쓰이고 GROUP BY 는 FROM 이후에 쓰입니다.   
+  <br>
+  
+  그럼 퀴즈 ~~~   
+
+  `SELECT COUNT(DISTINCT Country) FROM Customers`   
+  `SELECT COUNT(Country) FROM Customers GROUP BY Country`
+
+  이 경우 어떻게 의미가 다르며, 어떠한 결과가 나올까요?   
+
+   <details>
+   <summary>
+   정답
+   </summary>
+   <br>
+
+   [직접 확인](https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_distinct2)
+
+   `SELECT COUNT(DISTINCT Country) FROM Customers`   
+   Country 가 다른 값들이 총 몇개 있습니까?   
+
+   |COUNT(DISTINCT Country)|
+   |:---|
+   |21|
+
+   `SELECT COUNT(Country) FROM Customers GROUP BY Country`   
+   Country 로 모은 집합의 각각 요소들은 총 몇개 있습니까?   
+
+   |COUNT(Country)|
+   |:---|
+   |3|
+   |2|
+   |2|
+   |9|
+   |3|
+   |2|
+
+   DISTINCT 는 단일한 값의 정보들만이 내포되어 있지만 GROUP BY 는 집합의 정보가 내포되어 있습니다.
+
+   그래서 이러한 의미와 결과, 선언 위치의 차이가 있습니다.   
+   </details>
+   <br>
+  </details>
+  <br>
