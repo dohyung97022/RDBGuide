@@ -265,7 +265,8 @@ TODO : B+ tree 이어서 작성하기
   |2|김준형|23|
   |3|장광식|25|
   |4|권설민|24|
-
+  <br>
+  
   `SELECT COUNT(age) FROM TABLE GROUP BY age`
 
   |COUNT(age)|age|
@@ -273,7 +274,8 @@ TODO : B+ tree 이어서 작성하기
   |1|23|
   |1|24|
   |2|25|
-
+  <br>
+  
   집계함수에는 `COUNT(), MAX(), MIN(), SUM(), AVG()` 가 있습니다.    
 
   <br>
@@ -308,7 +310,7 @@ TODO : B+ tree 이어서 작성하기
   DISTINCT 는 different 와 같은 의미로 `SELECT DISTINCT column FROM table` 를 풀어 설명하면   
   column 의 다른(different/DISTINCT) 한 값들을 찾아주라는 의미입니다.   
   
-  GROUP BY 는 해당 컬럼으로 모와서 나타내라는 의미로 `SELECT column FROM table GROUP BY column` 를 풀어 설명하면   
+  GROUP BY 는 해당 컬럼으로 모와서 나타내라는 의미로 `SELECT column FROM table GROUP BY column` 는   
   column 이 같은 값들로 모와서(GROUP BY) 찾아주라는 의미입니다.   
 
   DISTINCT 는 단일한 값의 정보들만이 내포되어 있지만 GROUP BY 는 집합의 정보가 내포되어 있습니다.   
@@ -331,14 +333,14 @@ TODO : B+ tree 이어서 작성하기
    [직접 확인](https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_distinct2)
 
    `SELECT COUNT(DISTINCT Country) FROM Customers`   
-   Country 가 다른 값들이 총 몇개 있습니까?   
+   Country 가 다른(Distinct) 값들이 총 몇개 있습니까?   
 
    |COUNT(DISTINCT Country)|
    |:---|
    |21|
 
    `SELECT COUNT(Country) FROM Customers GROUP BY Country`   
-   Country 로 모은 집합의 각각 요소들은 총 몇개 있습니까?   
+   Country 로 모은 집합의(GROUP BY) 각각 요소들은 총 몇개 있습니까?   
 
    |COUNT(Country)|
    |:---|
