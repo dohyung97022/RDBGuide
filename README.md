@@ -358,3 +358,108 @@ TODO : B+ tree 이어서 작성하기
    <br>
   </details>
   <br>
+
+  <details>
+  <summary>
+  Aliases / AS
+  </summary>
+  <br>
+  
+  Aliases 는 컬럼 / 테이블을 위한 경우로 나뉩니다.   
+  <br>
+  
+  컬럼을 위한 경우   
+  ```sql
+  SELECT column AS alias FROM table
+  ```
+  테이블/서브쿼리를 위한 경우 
+  ```sql
+  SELECT column FROM table AS alias
+  ```
+  <br>
+  
+  ### 컬럼을 위한 `alias`
+  
+  1. 컬럼명을 다른 명칭으로 나타내고 싶을 때 사용합니다.   
+     <br>
+     
+     쿼리
+     ```sql
+     SELECT id AS userId, name AS userName FROM USER
+     ```
+     <br>
+     
+     결과   
+     
+     |userId|userName|
+     |:---:|:---:|
+     |1|김도형|
+     |2|김준형|
+     <br>
+
+  2. 집계함수같은 operator 를 다른 명칭으로 나타낼 때 사용합니다.   
+     <br>
+     
+     쿼리
+     ```sql 
+     SELECT age, COUNT(age) AS usersAgeCount FROM TABLE USER GROUP BY age
+     ```
+     <br>
+     
+     결과
+     
+     |age|usersAgeCount|
+     |:---:|:---:|
+     |23|113|
+     |24|142|
+     |25|155|
+
+  <br>
+  
+  ### 테이블 / 서브쿼리를 위한 `alias`
+
+  1. 다른 테이블에 중복되는 컬럼명이 존재할 때   
+    <br>
+
+     쿼리
+     ```sql
+     SELECT c.id FROM USER AS u, CARD AS c WHERE c.user_id=u.id
+     ```
+    
+     c.id 라고 지정하지 않을 경우 user 의 id 를 요청하는지, card 의 id 를 요청하는지 알 수 없다.   
+     <br>
+     
+     alias 를 이렇게 사용하여 c.id 로 나타내는 것이 더 좋을 수도 있지만 테이블명 자체를 사용할 수도 있습니다.   
+     ```sql
+     SELECT CARD.id FROM USER, CARD WHERE USER.id=CARD.id
+     ``` 
+     
+     개발자들 간의 스타일의 차이라고 생각합니다.   
+     실제로도 테이블이 많아지면 CARD. 라고 작성하는 것보다 c. 로 단축하는 것이 더 좋을 수 있습니다.    
+     <br>
+     
+
+  2. 같은 테이블이 연속적으로 쿼리에서 등장할 때 / 서브쿼리를 사용할 때  
+     <br>
+     
+     예를 들어 `PRODUCT`, `PRODUCT_TAG`, `TAG` 의 다대다 관계가 있다고 가정해봅시다.      
+     <br>
+     
+     상품 1개는 여러개의 태그를 가질 수 있고 1개의 태그는 여러개의 상품에 할당될 수 있습니다.      
+     예로 마원피스의 `tags : [반팔, 여름, 원피스]` 같은 관계입니다.   
+     <br>
+     
+     사용자가 '여름' 이라는 태그를 선택했습니다.   
+
+     이 경우 쿼리는 `TAG -> PRODUCT_TAG -> PRODUCT` 의 방향으로 흘러갑니다.    
+     <br>
+     
+     PRODUCT 의 결과로 마원피스가 나왔습니다.   
+     하지만 원하는 구조는 `name : 마원피스, tags : [반팔, 여름, 원피스]` 입니다.   
+     그래서 데이터베이스는 다시 `PRODUCT -> PRODUCT_TAG -> TAG` 의 방향으로 TAG 들을 가져옵니다.   
+     <br>
+     
+     이 경우 `PRODUCT`, `PRODUCT_TAG`, `TAG` 는 2번 중복되어 쿼리에 나타납니다.   
+     중복되는 쿼리는 서브쿼리로 빼거나 `AS` 를 통해 alias 로 지정해주셔야 SQL 이 오류 없이 구분 가능합니다.    
+  </details>
+  <br>
