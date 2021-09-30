@@ -463,3 +463,131 @@ TODO : B+ tree 이어서 작성하기
      중복되는 쿼리는 서브쿼리로 빼거나 `AS` 를 통해 alias 로 지정해주셔야 SQL 이 오류 없이 구분 가능합니다.    
   </details>
   <br>
+
+  <details>
+  <summary>
+  UNION
+  </summary>
+  <br>
+  
+  Union 이라는 말은 한국어로 연합을 의미합니다.   
+  2개의 subquery 를 합친다고 생각하시면 됩니다.   
+
+  ### 사용조건
+  이 연합을 들어가기 위해서는 규정이 조금 빡쌥니다.
+
+  * subquery 의 컬럼들은 명칭이 모두 일치해야 합니다.
+  * subquery 의 컬럼들은 갯수는 모두 일치해야 합니다.
+  * subquery 의 컬럼들은 결과 타입이 모두 일치해야 합니다.
+  * subquery 의 컬럼들의 순서가 모두 일치해야 합니다.
+
+  결국 subquery 들이 서로 완전히 일치해아 합니다.   
+  결과 빼고 완전히 같은 subquery 2개를 합친다고 생각하시면 됩니다.   
+  <br>
+
+  ### UNION
+  Union 그냥 사용하면 DISTINCT 같은 성격을 갖습니다.   
+  모든 컬럼들이 중복되는 결과는 동일한 결과로 생각합니다.
+  
+  쿼리
+
+  ```sql
+  SELECT City FROM Customers
+  UNION
+  SELECT City FROM Suppliers
+  ORDER BY City;
+  ```
+
+  결과 
+
+  |City|
+  |:---:|
+  |Bergamo|
+  |Berlin|
+  |Bern|
+
+  컬럼이 City 로 단일할 경우 City 만의 중복을 확인합니다.      
+  <br>
+  
+  쿼리
+
+  ```sql
+  SELECT City, ContactName FROM Customers
+  UNION
+  SELECT City, ContactName FROM Suppliers
+  ORDER BY City;
+  ```
+
+  결과
+  
+  |City|ContactName|
+  |:---:|:---:|
+  |Bergamo|Giovanni Rovelli|
+  |Berlin|Petra Winkler|
+  |Berlin|Maria Anders|
+  |Bern|Yang Wang|
+
+  위의 결과와 달리 컬럼에 ContactName 이 늘어서 City Berlin 이 2개가 되었습니다.   
+
+  즉 Union 되는 컬럼들이 모두 일치하는 경우만 distinct 하게 제외합니다.   
+  <br>
+  
+  ### UNION ALL
+  UNION ALL 은 위의 distinct 성격을 없앱니다.   
+  모두 연합하라 라고 생각하시면 이해가 더 쉽습니다.   
+  
+  위의 예시를 계속 사용하면
+
+  쿼리
+
+  ```sql
+  SELECT City FROM Customers
+  UNION
+  SELECT City FROM Suppliers
+  ORDER BY City;
+  ```
+
+  결과
+
+  |City|
+  |:---:|
+  |Bergamo|
+  |Berlin|
+  |Bern|
+
+  쿼리
+
+  ```sql
+  SELECT City FROM Customers
+  UNION ALL
+  SELECT City FROM Suppliers
+  ORDER BY City;
+  ```
+
+  결과
+  
+  |City|
+  |:---:|
+  |Bergamo|
+  |Berlin|
+  |Berlin|
+  |Bern|
+
+  의 차이가 있습니다.
+
+  ### UNION 과 JOIN 의 차이
+  
+  UNION 은 `추가`입니다.   
+  JOIN 은 `결합`입니다.
+
+  #### UNION
+  ![](img/union.png)
+
+  #### JOIN
+  ![](img/left_right_join.PNG)
+
+  Union 은 `테이블`을 더 `추가`하는 개념이고,   
+  Join 은 `공통된 컬럼`을 가진 값들을 찾아 `결합`하는 개념입니다.   
+  참 쉽죠?
+  </details>
+  <br>
