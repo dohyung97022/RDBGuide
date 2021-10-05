@@ -591,3 +591,50 @@ TODO : B+ tree 이어서 작성하기
   참 쉽죠?
   </details>
   <br>
+
+  <details>
+  <summary>
+  IFNULL, NULLIF (MYSQL)
+  </summary>
+  <br>
+  
+  ### IFNULL
+
+  If (이라면) Null (null 값)   
+  영문 그대로 null 이라면 무엇을 반환해라 라는 의미입니다.   
+  ```sql
+  SELECT IFNULL(컬럼명, 대체값) FROM table
+  ```
+
+  CASE 문과 같은 맥락입니다. CASE 로 특정 컬럼이 null 인지 확인하는 경우입니다.   
+  ```sql
+  SELECT CASE WHEN 컬럼명 IS NULL THEN 대체값 ELSE 대체값2 END FROM TABLE 
+  ```
+
+  다만 CASE 문과 다르게 Null 일 경우에는 대체값을 반환하고 아닐 경우에는 컬럼 값을 그대로 반환합니다.  
+
+  ### NULLIF   
+  Null (null 을 반환한다) If (이라면)   
+  이 Operator 의 정확한 뜻은 If 문 뒤의 설명의 부족합니다.   
+  정확한 의미는 `NULL IF EQUAL` 의 되겠습니다.   
+
+  ```sql
+  SELECT NULLIF('김도형', '김도형')
+  ```
+
+  양쪽이 모두 김도형으로 값이 같아 아무런 값이 반환되지 않습니다.
+
+  ```sql
+  SELECT NULLIF(컬럼명, '비교값'), 컬럼명2 FROM 테이블명
+  ```
+
+  다음과 같이 실제 테이블에 적용하여 사용하신다면    
+  
+  |컬럼명|컬럼명2|
+  |:---:|:---:|
+  |null|컬럼값2|
+
+  와 같이 해당 값이 null 로 나옵니다.
+  </details>
+  <br>
+  
