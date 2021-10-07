@@ -206,6 +206,73 @@ TODO : B+ tree 이어서 작성하기
   </details>
   <br>
 
+## Transaction
+  <details>
+  <summary>
+  업무단위 / 실행단위
+  </summary>
+  <br>
+  
+  `Transaction` 의 뜻은 원래 `은행에서의 송금`을 뜻합니다.   
+
+  이 은행에서 sql 을 사용한다면 송금의 과정이 중간에 중단되거나, 개입이 있어서는 안됩니다.   
+
+  Transaction 은 위 의미를 그대로 함구합니다.
+
+  sql 명령어 중간에 중단, 개입을 막아주는 역확을 합니다.   
+
+  golang 의 mutex 나 java 의 lock 과 같다고 생각하면 됩니다.
+  <br>
+  
+  ### 업무단위
+  업무단위란 말 그대로 `일이 이뤄지는 단위`를 뜻합니다.   
+  위의 예시를 생각하면 `송금` 으로 이해하실 수 있습니다.
+
+  ### 실행단위
+  실행단위란 `한 업무가 완성되기까지 실행되는 모든 단위`들을 뜻합니다.   
+  위의 예시를 생각하면 user A 가 B 에게 10000원을 송금할 때   
+  A 에서 10000원-- 한다.   
+  B 에서 10000원++ 한다.   
+  송금 업무단위에 해당하는 실행 단위 2개가 되겠습니다.
+  </details>
+  <br>
+
+  <details>
+  <summary>
+  commit / rollback
+  </summary>
+  <br>
+  2개의 실행단위가 있다고 하겠습니다.   
+
+  ```sql
+  UPDATE 유저 SET cash = cash - 10000 WHERE name = 김도형;
+  ```
+  ```sql
+  UPDATE 유저 SET cash = cash + 10000 WHERE name = 김민형;
+  ```
+
+  위 실행단위는 중간에 중단되거나 개입이 있어서는 안됩니다.   
+  이를 위해 2개의 명령어를 작성한 이후 `COMMIT` 이라는 명령어를 작성합니다.
+  ```sql
+  UPDATE 유저 SET cash = cash - 10000 WHERE name = 김도형;
+  UPDATE 유저 SET cash = cash + 10000 WHERE name = 김민형;
+  COMMIT;
+  ```
+
+  이 경우 `COMMIT` 안정된 송금을 확정짓습니다.   
+  만일 송금이 실패하면 2개의 실행단위가 다 실패하고   
+  송금이 성공하면 김도형과 김민형의 돈은 정확하게 이동합니다.   
+  
+  만약 위의 commit 을 취소하고 싶다면 `ROLLBACK` 을 사용하시면 됩니다.
+  ```sql
+  UPDATE 유저 SET cash = cash - 10000 WHERE name = 김도형;
+  UPDATE 유저 SET cash = cash + 10000 WHERE name = 김민형;
+  COMMIT;
+  ROLLBACK;
+  ```
+  </details>
+  <br>
+
 ## Operator
   <details>
   <summary>
