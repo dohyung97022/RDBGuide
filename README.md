@@ -704,4 +704,35 @@ TODO : B+ tree 이어서 작성하기
   와 같이 해당 값이 null 로 나옵니다.
   </details>
   <br>
+
+  <details>
+  <summary>
+  IF, CASE WHEN THEN (MYSQL)
+  </summary>
+  <br>
+  
+  ### IF
+  
+  
+  ```sql
+  SELECT IF(조건, 참일 경우의 값, 거짓일 경우의 값) FROM table
+  ```
+  
+  간단한 3항연산자입니다.
+  
+  ### CASE WHEN THEN
+  
+  
+  ```sql
+  SELECT 
+         CASE 
+             WHEN type = 1 THEN '일반회원'
+             WHEN type = 2 THEN '탈퇴회원'
+             ELSE '이상한 회원'
+         END
+  FROM table
+  ```
+  간단한 CASE 문입니다.
+  </details>
+  <br>
   
